@@ -1,6 +1,20 @@
 Virtual Apollo Guidance Computer
 ================================
 
+# TO BUILD
+```
+$ sudo apt install libwxgtk3.0-gtk3-dev
+$ make
+```
+
+# TO RUN (Linux)
+```
+$ cd VirtualAGC/temp/lVirtualAGC/Resources
+$ ../bin/yaDSKY2 &
+$ ../bin/yaYUL <path/to/source>
+$ ../bin/yaAGC --nodebug <path/to/source.bin>
+```
+
 ### Build status
 
 | Travis CI (Linux) |
@@ -53,7 +67,7 @@ Perhaps the most important part of the guidance system was the [Inertial Measure
 
 # What this project is for
 
-This repository is associated with [the website of the Virtual AGC project](http://www.ibiblio.org/apollo), which provides a virtual machine which simulates the AGC, the DSKY, and some other portions of the guidance system. In other words, if the virtual machine—which we call yaAGC—is given the same software which was originally run by the real AGCs, and is fed the same input signals encountered by the real AGCs during Apollo missions, then it will respond in the same way as the real AGCs did. 
+This repository is associated with [the website of the Virtual AGC project](http://www.ibiblio.org/apollo), which provides a virtual machine which simulates the AGC, the DSKY, and some other portions of the guidance system. In other words, if the virtual machine—which we call yaAGC—is given the same software which was originally run by the real AGCs, and is fed the same input signals encountered by the real AGCs during Apollo missions, then it will respond in the same way as the real AGCs did.
 
 The Virtual AGC software is open source code so that it can be studied or modified. The repository contains the actual assembly-language source code for the AGC, for as many missions as we've been able to acquire, along with software for processing that AGC code. Principal tools are an assembler (to create executable code from the source code) and a CPU simulator (to run the executable code), as well as simulated peripherals (such as the DSKY). Similar source code and tools are provided for the very-different abort computer that resided in the Lunar Module. Finally, any supplemental software material we have been able to find or create for the Saturn rocket's [Launch Vehicle Digital Computer](https://en.wikipedia.org/wiki/Saturn_Launch_Vehicle_Digital_Computer) or for the [Gemini on-board computer (OBC)](https://en.wikipedia.org/wiki/Gemini_Guidance_Computer) are provided, though these materials are minimal at present.
 
@@ -97,7 +111,7 @@ On Fedora 22 or later you may encounter that the wxWidgets doesn't have the wx-c
 
 ## Mac OS X:
 
-* Requires 10.4 and later for Intel or PowerPC 
+* Requires 10.4 and later for Intel or PowerPC
 * 10.2 or prior are known not to work.
 
 ## FreeBSD:
@@ -150,7 +164,7 @@ To build, simply `cd` into the directory containing the source and do:
 
 Note: Do not `configure` and do not `make install`. While there is a `configure` script provided, it is presently used only for setting up builds of a couple of now-obsoleted programs, and it does not matter whether you run it or not nor whether it succeeds or fails. If the build does not complete because of a difference when comparing the `bin` files then you can rebuild with `make -k` to keep going. This however might mask other issues.
 
-You will find that this has created a directory `VirtualAGC/temp/lVirtualAGC/`. 
+You will find that this has created a directory `VirtualAGC/temp/lVirtualAGC/`.
 
 To match the default setup of the installer program execute the following:
 
@@ -181,15 +195,15 @@ Install a regular-expression library. The MinGW project has a "contributed" rege
 
 If all of this was done correctly you can build the Virtual AGC as follows:
 
-Unpack the development tarball in your home directory: 
+Unpack the development tarball in your home directory:
 
 `tar -xjvf yaAGC-dev-YYYYMMDD.tar.bz2`
 
-Build it: 
+Build it:
 
 `make -C yaAGC WIN32=yes`
 
-On Windows 7 (but not on XP) it is also necessary to copy `c:\MinGW\bin\mingwm10.dll` to `yaAGC/VirtualAGC/temp/lVirtualAGC/Resources/`. 
+On Windows 7 (but not on XP) it is also necessary to copy `c:\MinGW\bin\mingwm10.dll` to `yaAGC/VirtualAGC/temp/lVirtualAGC/Resources/`.
 
 This will create a directory `yaAGC/VirtualAGC/temp/lVirtualAGC/` which is the "installation directory". This directory is relocatable and need to remain within the Msys environment so you can move it wherever you like. Regardless you really need to create a desktop icon in order to run the program. The desktop icon should point to `lVirtualAGC\bin\VirtualAGC.exe` as the executable, and should use a "starting directory" of `lVirtualAGC\Resources`\. The graphic normally used for the desktop icon is `ApolloPatch2.jpg` in the `lVirtualAGC\Resources` directory.
 
@@ -229,7 +243,7 @@ After unpacking there will be a new directory called `yaAGC`. To build the progr
 
 Do not `configure` and do not `gmake install`.
 
-You will find that this has created a directory `yaAGC/VirtualAGC/temp/lVirtualAGC/`. 
+You will find that this has created a directory `yaAGC/VirtualAGC/temp/lVirtualAGC/`.
 
 To match the default setup of the installer program execute the following:
 
@@ -252,7 +266,7 @@ Open the `yaAGC/` directory and build:
 
 Do not `configure` and do not `gmake install`.
 
-You'll find that this has created a directory `yaAGC/VirtualAGC/temp/lVirtualAGC/`. 
+You'll find that this has created a directory `yaAGC/VirtualAGC/temp/lVirtualAGC/`.
 
 To match the default setup of the installer program execute the following:
 
