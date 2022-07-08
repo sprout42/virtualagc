@@ -24,7 +24,7 @@
 #		2009-03-14 RSB	For Mac OS, put yaDSKY, yaDEDA, yaDSK2,
 #				yaDEDA2, and yaTelemetry into app bundles.
 #				This doesn't seem to be necessary in 10.5,
-#				but in 10.4 these apps don't respond to 
+#				but in 10.4 these apps don't respond to
 #				events otherwise.
 #		2009-03-25 RSB	On Windows, replace VirtualAGC.zip with
 #				VirtualAGC-setup.exe built by InstallJammer.
@@ -34,7 +34,7 @@
 #				For anyone else, you're simply left with the
 #				installation directory rather than any tarball
 #				or installer program created from it afterward,
-#				since nobody else is likely to need to 
+#				since nobody else is likely to need to
 #				distribute it beyond the build computer.
 #		2009-04-11 RSB	Tweaking Mac OS X packages.  Added Terminator
 #				on Mac OS X.
@@ -46,20 +46,20 @@
 #				`pwd`/temp/....  I hadn't realized that the
 #				name of my home directory was embedded in the
 #				mpi files, and that would have prevented anyone
-#				else from creating InstallJammer based 
+#				else from creating InstallJammer based
 #				installers.  The present change fixes that
 #				by dynamically fixing the mpi files at compile
 #				time.  Fixed up for Win32 readline.
 #		2009-05-02 RSB	Added DEV_SNAP.
 #		2009-05-23 RSB	Added Comanche055.
-#		2009-06-01 RSB	The wrong value was being passed to the 
+#		2009-06-01 RSB	The wrong value was being passed to the
 #				CopyApolloSource.sh script's third parameter.
 #				Thanks to Onno Hommes for noticing this.  Also
 #				added a 4th parameter for Windows vs. non-Windows.
 #		2009-06-07 RSB	Added Luminary099.
 #		2009-07-02 RSB	Added SyntaxHighlight stuff to the binary installers.
-#		2009-08-01 RSB	Putting readline5.dll into the installation 
-#				directory is now non-fatal if the dll doesn't 
+#		2009-08-01 RSB	Putting readline5.dll into the installation
+#				directory is now non-fatal if the dll doesn't
 #				exist, which it wouldn't if readline was built
 #				static-only.
 #		2012-09-16 JL	Updated to match tools dir changes.
@@ -69,31 +69,31 @@
 #		2016-08-06 RSB  A number of programs have previously been set
 #				This had been set to build statically-linked
 #				for USERNAME=rburkey (me!) and dynamically-linked
-#				for everyone else, for the purpose of making it 
+#				for everyone else, for the purpose of making it
 #				easier to create installers.  I am in the process
 #				of changing all such Linux executables that use
 #				agc_utilities.c to be always dynamically-linked,
 #				because with newer system libraries, some portions
-#				of agc_utilities.c doesn't work when statically 
+#				of agc_utilities.c doesn't work when statically
 #				linked.  These changes affect nobody else's builds
 #				except mine, and only affect the Linux versions of
 #				the executables.
 #		2016-08-07 RSB	The Validation "mission" was missing.
 #		2016-08-28 RSB	Activated Solarium055 mission.
 #		2016-11-07 RSB	Added the Aurora12 and Sunburst120 missions,
-#				but also made it so that the MISSIONS 
+#				but also made it so that the MISSIONS
 #				environment variable is assign herein only if
 #				it doesn't previously exists.
 #		2016-11-16 RSB	Certain resources needed only by the "standard"
 #				32-bit Linux VirtualAGC VM I'm now creating are
 #				added to the installation bundle.  These are
-#				related to debugging on Code::blocks. 
+#				related to debugging on Code::blocks.
 #		2016-11-29 RSB	Fixed formation of .app sub-directories for Mac.
 #		2017-08-24 RSB	Added wxFLAGS.
 #		2017-12-11 RSB	Added yaDSKY2/*.canned files.
 
 APP=VirtualAGC
-# *** BEWARE! ***  The MISSIONS variable is normally inherited from the 
+# *** BEWARE! ***  The MISSIONS variable is normally inherited from the
 # top-level Makefile, so don't assume you can add missions here!
 ifndef MISSIONS
 MISSIONS=Colossus249 Luminary131 Artemis072 Validation FP6 FP8 Comanche055
@@ -105,7 +105,7 @@ endif
 # For cross-platform building --- i.e., for building Win32 and Mac OS X versions
 # of VirtualAGC on a Linux platform --- it is assumed that the IMCROSS
 # environment (www.sandroid.org/imcross) is installed.  It is further supposed
-# that the IMCROSS installation directory is ~/IMCROSS and that ~/IMCROSS/bin 
+# that the IMCROSS installation directory is ~/IMCROSS and that ~/IMCROSS/bin
 # is in the PATH.  The following variables just reflect the default setup for
 # IMCROSS.
 PREFIX_WIN=i386-mingw32
@@ -241,30 +241,33 @@ temp/lVirtualAGC/bin temp/VirtualAGC/bin temp/VirtualAGC.app/Contents/MacOS:
 .PHONY: temp/lVirtualAGC/Resources
 temp/lVirtualAGC/Resources temp/VirtualAGC/Resources temp/VirtualAGC.app/Contents/Resources:
 	mkdir -p $@/pixmaps $@/source
-	${CP} ../scenarios $@
+	${CP} ../scenarios/* $@
 	for n in ${MISSIONS}; do \
 		sh ./CopyApolloSource.sh $@ $$n ${EXTSW} ${WIN32} ;\
 	done
 	${CP} *.png *.ico $@
 	${CP} ../yaDSKY/src/*.ini $@
-ifeq "${YADSKY_SUFFIX}" ""	
-	${CP} ../yaDSKY/pixmaps $@/pixmaps/yaDSKY
+ifeq "${YADSKY_SUFFIX}" ""
+	mkdir -p $@/pixmaps/yaDSKY
+	${CP} -r ../yaDSKY/pixmaps/* $@/pixmaps/yaDSKY
 else
 	${CP} ../yaDSKY2/*.jpg $@
 	${CP} ../yaDSKY2/*.canned $@
-endif	
+endif
 	-rm -rf $@/pixmaps/yaDSKY/CVS $@/pixmaps/yaDSKY/.xvpics
-ifeq "${YADEDA_SUFFIX}" ""	
-	${CP} ../yaDEDA/pixmaps $@/pixmaps/yaDEDA
+ifeq "${YADEDA_SUFFIX}" ""
+	mkdir -p $@/pixmaps/yaDEDA
+	${CP} -r ../yaDEDA/pixmaps/* $@/pixmaps/yaDEDA
 else
 	${CP} ../yaDEDA2/*.xpm $@
 endif
-	${CP} ../yaDSKYb1/images $@/images-yaDSKYb1
+	mkdir -p $@/images-yaDSKYb1
+	${CP} -r ../yaDSKYb1/images/* $@/images-yaDSKYb1
 	-rm -rf $@/images-yaDSKYb1/CVS $@/images-yaDSKYb1/.xvpics
 	${CP} ../jWiz/*.jpg $@
 	-rm -rf $@/pixmaps/yaDEDA/CVS $@/pixmaps/yaDEDA/.xvpics
 	${CP} ../yaTelemetry/*.jpg $@
-	${CP} ../Contributed/LM_Simulator $@
+	${CP} -r ../Contributed/LM_Simulator/* $@
 	${CP} VirtualAGC.tcl $@
 	-rm -rf $@/LM_Simulator/CVS
 	-rm -rf $@/LM_Simulator/modules/CVS
@@ -292,7 +295,7 @@ ifeq "${EXT}" ".exe"
 		${CP} c:/mingw/bin/$$n.dll $@ ; \
 	done
 endif
-	${CP} ../Contributed/SyntaxHighlight $@
+	${CP} -r ../Contributed/SyntaxHighlight/* $@
 	rm -rf `find $@/SyntaxHighlight -name ".svn"`
 
 # The targets below create a bin directory for the distribution
@@ -357,10 +360,10 @@ temp/VirtualAGC : % : VirtualAGC.exe %/bin %/Resources
 	${CP} ../yaACA2/yaACA2.exe $@/bin
 	cp VirtualAGC-win32/ApolloPatch2.ico $@/bin
 	for n in $@/bin/* ; do i386-mingw32-strip $$n ; done
-ifeq "$YADSKY2" ""	
+ifeq "$YADSKY2" ""
 	cp ${HOME}/IMCROSS/i386-mingw32/bin/*.dll $@/Resources
 endif
-ifeq "$YADEDA2" ""	
+ifeq "$YADEDA2" ""
 	cp ${HOME}/IMCROSS/i386-mingw32/bin/*.dll $@/Resources
 endif
 	-cp ${HOME}/IMCROSS/i386-mingw32/bin/readline5.dll $@/Resources
@@ -373,9 +376,9 @@ create-bundle:
 	mkdir -p temp/VirtualAGC.app/Contents
 	${CP} template.app/Contents/Info.plist temp/VirtualAGC.app/Contents
 
-# The Mac application tarball requires a file called Terminator.app.tar.bz2 in the 
+# The Mac application tarball requires a file called Terminator.app.tar.bz2 in the
 # parent directory of yaAGC.  This file is obtained by downloading terminator.dmg
-# from http://software.jessies.org/terminator/, installing it in Mac OS X to 
+# from http://software.jessies.org/terminator/, installing it in Mac OS X to
 # create Terminator.app, and then making a tarball from Terminator.app.  Since the
 # binary is not changed from what the supplier provides, the GPL requires merely
 # that I provide a link to the source tarball at the supplier's site.
@@ -400,10 +403,10 @@ temp/VirtualAGC.app : % : VirtualAGC-macosx create-bundle %/Contents/MacOS %/Con
 	done
 	${CP} ../scripts/SimStop $@/Contents/MacOS
 	chmod +x $@/Contents/MacOS/SimStop
-ifeq "$YADSKY2" ""	
+ifeq "$YADSKY2" ""
 	-${CP} ${HOME}/IMCROSS/mac/lib/*.dylib $@/Contents/MacOS
 endif
-ifeq "$YADEDA2" ""	
+ifeq "$YADEDA2" ""
 	-${CP} ${HOME}/IMCROSS/mac/lib/*.dylib $@/Contents/MacOS
 endif
 
@@ -422,10 +425,10 @@ temp/VirtualAGC.app : % : VirtualAGC create-bundle %/Contents/MacOS %/Contents/R
 	done
 	${CP} ../scripts/SimStop $@/Contents/MacOS
 	chmod +x $@/Contents/MacOS/SimStop
-ifeq "$YADSKY2" ""	
+ifeq "$YADSKY2" ""
 	-${CP} ${HOME}/IMCROSS/mac/lib/*.dylib $@/Contents/MacOS
 endif
-ifeq "$YADEDA2" ""	
+ifeq "$YADEDA2" ""
 	-${CP} ${HOME}/IMCROSS/mac/lib/*.dylib $@/Contents/MacOS
 endif
 
